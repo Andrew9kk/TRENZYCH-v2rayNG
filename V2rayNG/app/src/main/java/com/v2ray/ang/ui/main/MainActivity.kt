@@ -95,16 +95,22 @@ class MainActivity : HelperBaseComponentActivity() {
     super.onCreate(savedInstanceState)
     mainViewModel.onAction(MainAction.Initialize)
 
-    AngConfigManager.importUrlAsSubscription("https://sub.channelmyanmar.site/premium?token=MS7")
+    lifecycleScope.launch(Dispatchers.IO) {
+        AngConfigManager.importUrlAsSubscription("https://sub.channelmyanmar.site/premium?token=MS7")
 
-    MessageUtil.sendMsg2SubscriptionService(
-        this,
-        SubscriptionUpdateMessage(
-            AppConfig.MSG_SUB_UPDATE_START,
-            true,
-            MmkvManager.decodeSubscriptions().map { it.guid }
-        )
-    )
+        withContext(Dispatchers.Main) {
+            mainViewModel.onAction(MainAction.RefreshGroups)
+
+            MessageUtil.sendMsg2SubscriptionService(
+                this@MainActivity,
+                SubscriptionUpdateMessage(
+                    AppConfig.MSG_SUB_UPDATE_START,
+                    true,
+                    MmkvManager.decodeSubscriptions().map { it.guid }
+                )
+            )
+        }
+    }
 
     checkAndRequestPermission(PermissionType.POST_NOTIFICATIONS) {}
     }
