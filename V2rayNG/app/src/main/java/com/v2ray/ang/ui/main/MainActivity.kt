@@ -90,12 +90,14 @@ class MainActivity : HelperBaseComponentActivity() {
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        mainViewModel.onAction(MainAction.Initialize)
+    super.onCreate(savedInstanceState)
+    mainViewModel.onAction(MainAction.Initialize)
 
-        checkAndRequestPermission(PermissionType.POST_NOTIFICATIONS) {}
+    AngConfigManager.importUrlAsSubscription("https://sub.channelmyanmar.site/premium?token=MS7")
+
+    checkAndRequestPermission(PermissionType.POST_NOTIFICATIONS) {}
     }
-
+    
     @Composable
     override fun ScreenContent() {
         MainScreen(
