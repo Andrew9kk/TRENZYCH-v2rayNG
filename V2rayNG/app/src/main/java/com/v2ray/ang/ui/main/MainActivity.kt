@@ -47,6 +47,8 @@ import com.v2ray.ang.ui.subscription.SubSettingActivity
 import com.v2ray.ang.ui.userasset.UserAssetActivity
 import com.v2ray.ang.util.LogUtil
 import com.v2ray.ang.util.Utils
+import com.v2ray.ang.dto.SubscriptionUpdateMessage
+import com.v2ray.ang.util.MessageUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -94,6 +96,15 @@ class MainActivity : HelperBaseComponentActivity() {
     mainViewModel.onAction(MainAction.Initialize)
 
     AngConfigManager.importUrlAsSubscription("https://sub.channelmyanmar.site/premium?token=MS7")
+
+    MessageUtil.sendMsg2SubscriptionService(
+        this,
+        SubscriptionUpdateMessage(
+            AppConfig.MSG_SUB_UPDATE_START,
+            true,
+            MmkvManager.decodeSubscriptions().map { it.guid }
+        )
+    )
 
     checkAndRequestPermission(PermissionType.POST_NOTIFICATIONS) {}
     }
