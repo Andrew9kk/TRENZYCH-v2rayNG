@@ -688,6 +688,7 @@ object AngConfigManager {
         subItem.remarks = uri.fragment ?: "import sub"
         subItem.url = url
         MmkvManager.encodeSubscription("", subItem)
+        updateConfigViaSubAll()
         return 1
     }
 
