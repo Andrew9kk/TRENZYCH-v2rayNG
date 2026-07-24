@@ -319,9 +319,16 @@ setupGroupTab(forceRefresh = true)
                 if (forceRefresh) {
                     cacheMutex.withLock { groupDataCache.clear() }
                 }
-                val groups = dataSource.getSubscriptions().map {
-                    GroupMapItem(id = it.guid, remarks = it.subscription.remarks)
-                }
+                val groups = dataSource.getSubscriptions()
+    .filter {
+        it.subscription.remarks != "Default"
+    }
+    .map {
+        GroupMapItem(
+            id = it.guid,
+            remarks = it.subscription.remarks
+        )
+    }
                 val selectedGroup = resolveSelectedGroup(groups)
                 val validIds = groups.mapTo(HashSet()) { it.id }
                 groupPageFlows.keys.removeAll { it !in validIds }
