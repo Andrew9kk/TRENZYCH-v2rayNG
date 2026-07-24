@@ -210,6 +210,7 @@ class MainViewModel(
                 delay(32L)
                 dataSource.initAssets()
                 dataSource.syncSubscriptions()
+                dataSource.updateConfigViaSubAll()
                 
                 refreshUiSettings()
 setupGroupTab(forceRefresh = true)
