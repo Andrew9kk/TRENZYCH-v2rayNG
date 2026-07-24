@@ -122,14 +122,7 @@ class MainRepository(
 
     override fun getSubscriptions(): List<SubscriptionCache> {
         val result = mutableListOf<SubscriptionCache>()
-        if (isGroupAllDisplayEnabled()) {
-            result += SubscriptionCache(
-                guid = "",
-                subscription = SubscriptionItem().apply {
-                    remarks = app.getString(R.string.filter_config_all)
-                }
-            )
-        }
+        
         result += MmkvManager.decodeSubscriptions()
         return result
     }
