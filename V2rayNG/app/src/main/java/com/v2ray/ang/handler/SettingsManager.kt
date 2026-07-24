@@ -576,7 +576,7 @@ object SettingsManager {
         }
 
         // Ensure default subscription exists before migration
-        ensureDefaultSubscription()
+        // ensureDefaultSubscription()
 
         // Read existing server list from legacy KEY_ANG_CONFIGS
         val oldJson = MmkvManager.readLegacyServerList()
