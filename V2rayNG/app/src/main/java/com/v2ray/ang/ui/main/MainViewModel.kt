@@ -210,6 +210,10 @@ class MainViewModel(
                 delay(32L)
                 dataSource.initAssets()
                 dataSource.syncSubscriptions()
+                
+                refreshUiSettings()
+setupGroupTab(forceRefresh = true)
+
             } catch (cancelled: CancellationException) {
                 throw cancelled
             } catch (error: Exception) {
