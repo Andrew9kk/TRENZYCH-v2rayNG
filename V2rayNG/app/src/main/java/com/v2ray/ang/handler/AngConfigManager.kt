@@ -677,21 +677,31 @@ object AngConfigManager {
      * @return The number of subscriptions imported.
      */
     fun importUrlAsSubscription(url: String): Int {
-        val subscriptions = MmkvManager.decodeSubscriptions()
-        subscriptions.forEach {
-            if (it.subscription.url == url) {
-                return 0
-            }
+    val subscriptions = MmkvManager.decodeSubscriptions()
+    subscriptions.forEach {
+        if (it.subscription.url == url) {
+            MmkvManager.encodeSettings(AppConfig.CACHE_SUBSCRIPTION_ID, it.guid)
+            return 0
         }
-        val uri = URI(Utils.fixIllegalUrl(url))
-        val subItem = SubscriptionItem()
-        subItem.remarks = uri.fragment ?: "import sub"
-        subItem.url = url
-        MmkvManager.encodeSubscription("", subItem)
-        updateConfigViaSubAll()
-        return 1
     }
 
+    val uri = URI(Utils.fixIllegalUrl(url))
+    val subItem = SubscriptionItem()
+    subItem.remarks = uri.fragment ?: "import sub"
+    subItem.url = url
+
+    MmkvManager.encodeSubscription("", subItem)
+
+    val newSub = MmkvManager.decodeSubscriptions().lastOrNull()
+    newSub?.let {
+        MmkvManager.encodeSettings(AppConfig.CACHE_SUBSCRIPTION_ID, it.guid)
+    }
+
+    updateConfigViaSubAll()
+
+    return 1
+    }
+    
     /** Generates a description for the profile.
      *
      * @param profile The profile item.
